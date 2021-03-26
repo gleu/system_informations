@@ -10,10 +10,11 @@
 # Options are set through the ASPERSA_SKIP environment variable.  Set this
 # variable to a comma-separated list of things you want to omit.
 # Options:
-#  MOUNT:   Don't print out mounted filesystems and disk fullness.
-#  NETWORK: Don't print out information on network controllers & config.
-#  PROCESS: Don't print out top processes and vmstat information.
-#  PACKAGE: Don't print out packages information.
+#  MOUNT:      Don't print out mounted filesystems and disk fullness.
+#  NETWORK:    Don't print out information on network controllers & config.
+#  PROCESS:    Don't print out top processes and vmstat information.
+#  PACKAGE:    Don't print out packages information.
+#  POSTGRESQL: Don't print out PostgreSQL information.
 #
 # Authors:
 #  Baron Schwartz
@@ -25,6 +26,7 @@
 #  * add some kernel options
 #  * add packages reporting
 #  * add postgresql processes reporting
+#  * add pg_controldata reporting
 #
 # Author:
 #  Guillaume Lelarge
@@ -1205,6 +1207,19 @@ main () {
             # TODO: simplify/format for other platforms
             cat /tmp/aspersa
          fi
+      fi
+   fi
+
+   # ########################################################################
+   # PostgreSQL specifics
+   # ########################################################################
+   if echo "${ASPERSA_SKIP}" | grep -v POSTGRESQL >/dev/null; then
+      section PostgreSQL
+      if which pg_controldata > /dev/null 2>&1 ; then
+         section "PostgreSQL_Control_File"
+         pg_controldata
+      else
+         echo "No pg_controldata!"
       fi
    fi
 
