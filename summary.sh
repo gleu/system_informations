@@ -24,6 +24,7 @@
 # Some changes by new author
 #  * add some kernel options
 #  * add packages reporting
+#  * add postgresql processes reporting
 #
 # Author:
 #  Guillaume Lelarge
@@ -1193,6 +1194,8 @@ main () {
          fi
          $cmd | sed -e 's# *$##g' -e '/./{H;$!d;}' -e 'x;/PID/!d;' | grep . | head
       fi
+      section PostgreSQL_Processes
+      ps -ef | grep postgres
       if which vmstat > /dev/null 2>&1 ; then
          section "Simplified_and_fuzzy_rounded_vmstat_(wait_please)"
          vmstat 1 5 > /tmp/aspersa
