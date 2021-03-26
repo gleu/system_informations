@@ -13,6 +13,7 @@
 #  MOUNT:   Don't print out mounted filesystems and disk fullness.
 #  NETWORK: Don't print out information on network controllers & config.
 #  PROCESS: Don't print out top processes and vmstat information.
+#  PACKAGE: Don't print out packages information.
 #
 # Authors:
 #  Baron Schwartz
@@ -22,6 +23,7 @@
 # ########################################################################
 # Some changes by new author
 #  * add some kernel options
+#  * add packages reporting
 #
 # Author:
 #  Guillaume Lelarge
@@ -1159,6 +1161,21 @@ main () {
          if netstat -antp > /tmp/aspersa 2>/dev/null; then
             parse_netstat
          fi
+      fi
+   fi
+
+   # ########################################################################
+   # Packages
+   # ########################################################################
+   if echo "${ASPERSA_SKIP}" | grep -v PACKAGE >/dev/null; then
+      section Packages
+      if which vmstat > /dev/null 2>&1 ; then
+         section "PostgreSQL_Packages"
+         rpm -qa | grep postgres | sort
+         section "Kernel_Packages"
+         rpm -qa | grep kernel | sort
+         section "GLibc_Packages"
+         rpm -qa | grep glibc | sort
       fi
    fi
 
