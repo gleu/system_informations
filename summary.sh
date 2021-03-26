@@ -21,6 +21,7 @@
 
 # ########################################################################
 # Some changes by new author
+#  * add some kernel options
 #
 # Author:
 #  Guillaume Lelarge
@@ -1014,6 +1015,10 @@ main () {
       if sysctl vm.dirty_bytes > /dev/null 2>&1; then
          name_val DirtyStatus "$(sysctl vm.dirty_bytes 2>&1), $(sysctl vm.dirty_background_bytes 2>&1)"
       fi
+      name_val HugePages "$(sysctl vm.nr_hugepages 2>&1), $(sysctl vm.nr_overcommit_hugepages 2>&1)"
+      name_val OOM "$(sysctl vm.overcommit_memory 2>&1), $(sysctl vm.overcommit_ratio 2>&1)"
+      name_val NUMA "$(sysctl vm.zone_reclaim_mode 2>&1), $(sysctl kernel.numa_balancing 2>&1),
+                     $(sysctl kernel.sched_migration_cost_ns 2>&1)"
    fi
 
    if which dmidecode >/dev/null 2>&1 && dmidecode > /tmp/aspersa 2>/dev/null; then
