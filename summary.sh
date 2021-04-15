@@ -1060,6 +1060,7 @@ main () {
 
       # Relies on /tmp/aspersa having data from the Disk Schedulers loop.
       section "Disk_Partioning"
+      lsblk
       parse_fdisk
 
       section "Kernel_Inode_State"
@@ -1073,6 +1074,13 @@ main () {
          lvs 2>&1
       else
          echo "Cannot execute 'lvs'";
+      fi
+
+      section "fstab_contents"
+      if test -f /etc/fstab; then
+         cat /etc/fstab
+      else
+         echo "No /etc/fstab"
       fi
    fi
 
