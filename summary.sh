@@ -1000,6 +1000,11 @@ main () {
       # TODO: prtconf -v actually prints the CPU model name etc.
    fi
 
+   if [ "${platform}" = "Linux" ]; then
+      name_val NUMA "$(sysctl vm.zone_reclaim_mode 2>&1), $(sysctl kernel.numa_balancing 2>&1),
+                     $(sysctl kernel.sched_migration_cost_ns 2>&1)"
+   fi
+
    section Memory
    if [ "${platform}" = "Linux" ]; then
       free -b > /tmp/aspersa
@@ -1022,8 +1027,6 @@ main () {
       fi
       name_val HugePages "$(sysctl vm.nr_hugepages 2>&1), $(sysctl vm.nr_overcommit_hugepages 2>&1)"
       name_val OOM "$(sysctl vm.overcommit_memory 2>&1), $(sysctl vm.overcommit_ratio 2>&1)"
-      name_val NUMA "$(sysctl vm.zone_reclaim_mode 2>&1), $(sysctl kernel.numa_balancing 2>&1),
-                     $(sysctl kernel.sched_migration_cost_ns 2>&1)"
    fi
 
    if which dmidecode >/dev/null 2>&1 && dmidecode > /tmp/aspersa 2>/dev/null; then
