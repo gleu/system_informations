@@ -988,6 +988,12 @@ main () {
    # ########################################################################
    # Processor/CPU, Memory, Swappiness, dmidecode
    # ########################################################################
+   section Topography
+   if which lstopo >/dev/null 2>&1 && lstopo --output-format png > lstopo.png 2>/dev/null; then
+      echo "See lstopo.png file"
+   elif which smbios >/dev/null 2>&1 && smbios > /tmp/aspersa.smbios 2>/dev/null; then
+      echo "lstopo not found!"
+   fi
    section Processor
    if [ -f /proc/cpuinfo ]; then
       cat /proc/cpuinfo > /tmp/aspersa 2>/dev/null
